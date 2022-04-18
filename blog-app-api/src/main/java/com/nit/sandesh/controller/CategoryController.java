@@ -58,8 +58,8 @@ public class CategoryController {
 	@GetMapping("/")
 	public ResponseEntity<List<CategoryDto>> getAllCatagory(){
 		List<CategoryDto>  categoryDto1 =  this.service.getAllCategory();
-		//return new ResponseEntity<List<CategoryDto>>(categoryDto,HttpStatus.OK);
-		return ResponseEntity.ok(categoryDto1);
+		return new ResponseEntity<List<CategoryDto>>(categoryDto1,HttpStatus.OK);
+		//return ResponseEntity.ok(categoryDto1);
 	}
 	
 }
