@@ -24,7 +24,6 @@ public class UserDto {
 	@Size(min = 3, message = "password must be at list 3 characters")
 	private String password;
 	@NotEmpty
-	
 	private String about;
 
 }

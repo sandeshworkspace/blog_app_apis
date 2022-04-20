@@ -1,16 +1,20 @@
 package com.nit.sandesh.payloads;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.validation.constraints.NotEmpty;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 public class CategoryDto {
 	
 	private Integer categoryId;
+	@NotEmpty
 	private String categoryTitle;
+	@NotEmpty
 	private String categoryDiscripter;
 
 }

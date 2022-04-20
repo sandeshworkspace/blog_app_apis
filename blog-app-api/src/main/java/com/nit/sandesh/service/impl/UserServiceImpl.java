@@ -63,6 +63,9 @@ public class UserServiceImpl implements IUserService {
 
 	}
 	
+	
+	//converting dot to user 
+	
 	public User dtoToUser(UserDto userDto) {
 		User user = modelMapper.map(userDto, User.class);
 		
@@ -73,6 +76,8 @@ public class UserServiceImpl implements IUserService {
 		 */
 		return user;
 	}
+	
+	//converting userto dtos
 	
 	public UserDto userToDto(User user) {
 		UserDto userdto = modelMapper.map(user, UserDto.class);
