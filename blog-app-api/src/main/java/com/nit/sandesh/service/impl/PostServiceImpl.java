@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.nit.sandesh.entity.Category;
@@ -16,6 +17,7 @@ import com.nit.sandesh.entity.Post;
 import com.nit.sandesh.entity.User;
 import com.nit.sandesh.exception.ResourceNotFoundException;
 import com.nit.sandesh.payloads.PostDto;
+import com.nit.sandesh.payloads.PostResponse;
 import com.nit.sandesh.repositories.CategoryRepo;
 import com.nit.sandesh.repositories.PostRepo;
 import com.nit.sandesh.repositories.UserRepo;
@@ -76,13 +78,24 @@ public class PostServiceImpl implements IPostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize) {
-		
-		Pageable p = PageRequest.of(pageNumber, pageSize);
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy) {
+		Pageable p = PageRequest.of(pageNumber, pageSize,Sort.by(sortBy));
 		Page<Post> pagePosts = this.postRepo.findAll(p);
+		System.out.println("size of the pagePosts "+pagePosts.getSize());
 		List<Post> allPosts = pagePosts.getContent();
+		System.out.println("allPost "+allPosts.size());
 		List<PostDto> postDtos = allPosts.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-		return postDtos;
+		System.out.println("postSize "+postDtos.size());
+		
+		PostResponse postResponse = new PostResponse();
+		postResponse.setContent(postDtos);
+		postResponse.setPageNumber(pagePosts.getNumber());
+		postResponse.setPageSize(pagePosts.getSize());
+	    postResponse.setTotalElements(pagePosts.getTotalElements());
+	    postResponse.setTotalPages(pagePosts.getTotalPages());
+	    postResponse.setLastPage(pagePosts.isLast());
+		return postResponse;
+		
 	}
 
 	@Override
@@ -106,8 +119,9 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public List<PostDto> searchPost(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Post> posts = this.postRepo.findByTitleContaining(keyword);
+		List<PostDto> postDtos= posts.stream().map((post)->this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
+		return postDtos;
 	}
 
 

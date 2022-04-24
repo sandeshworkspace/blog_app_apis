@@ -3,6 +3,7 @@ package com.nit.sandesh.service;
 import java.util.List;
 
 import com.nit.sandesh.payloads.PostDto;
+import com.nit.sandesh.payloads.PostResponse;
 
 public interface IPostService {
 	//create
@@ -18,7 +19,7 @@ public interface IPostService {
 	PostDto getpostById(Integer postId);
 	
 	//get all post
-	List<PostDto> getAllPost(Integer pageNumber, Integer pageSize);
+	PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy);
 	
 	//get post by category
 	List<PostDto> getPostByCategory(Integer categoryId);
