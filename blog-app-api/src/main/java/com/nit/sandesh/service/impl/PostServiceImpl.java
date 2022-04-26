@@ -78,8 +78,15 @@ public class PostServiceImpl implements IPostService {
 	}
 
 	@Override
-	public PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy) {
-		Pageable p = PageRequest.of(pageNumber, pageSize,Sort.by(sortBy));
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy, String sortDir) {
+		Sort sort=null;
+		if(sortDir.equalsIgnoreCase("ase")) {
+			sort = Sort.by(sortBy).ascending();
+		}
+		else {
+			sort = Sort.by(sortBy).descending();
+		}
+		Pageable p = PageRequest.of(pageNumber, pageSize,sort);
 		Page<Post> pagePosts = this.postRepo.findAll(p);
 		System.out.println("size of the pagePosts "+pagePosts.getSize());
 		List<Post> allPosts = pagePosts.getContent();
@@ -119,7 +126,7 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public List<PostDto> searchPost(String keyword) {
-		List<Post> posts = this.postRepo.findByTitleContaining(keyword);
+		List<Post> posts = this.postRepo.searchByTitle("%"+keyword+"%");
 		List<PostDto> postDtos= posts.stream().map((post)->this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
 		return postDtos;
 	}
